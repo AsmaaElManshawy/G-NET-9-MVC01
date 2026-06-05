@@ -1,8 +1,8 @@
 using System.Diagnostics;
-using GymSystem.Models;
+using GymSystem.PL.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GymSystem.Controllers
+namespace GymSystem.PL.Controllers
 {
     public class HomeController : Controller
     {
