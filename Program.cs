@@ -1,3 +1,5 @@
+using GymManagment.BLL.Services.Classes;
+using GymManagment.BLL.Services.Interfaces;
 using GymManagment.DAL.Context;
 using GymManagment.DAL.Repositories.Class;
 using GymManagment.DAL.Repositories.Interfaces;
@@ -22,8 +24,10 @@ namespace GymSystem.PL
 
             //================Register our repositories====================
             // EF Core will create DbContext and Repository instances per request, ensuring they are disposed of correctly
-            builder.Services.AddScoped<IPlanRepository , PlanRepository>();
 
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            builder.Services.AddScoped<IMemberService , MemberService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
