@@ -29,6 +29,8 @@ namespace GymSystem.PL
 
             builder.Services.AddScoped<IMemberService , MemberService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IPlanService, PlanService>();
+            builder.Services.AddScoped<ITrainerService, TrainerService>();
 
             var app = builder.Build();
 

@@ -1,6 +1,5 @@
 ﻿using GymManagment.BLL.Services.Interfaces;
-using GymManagment.BLL.ViewModels;
-using GymManagment.DAL.Models;
+using GymManagment.BLL.ViewModels.MembersVMs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymSystem.PL.Controllers
@@ -120,12 +119,12 @@ namespace GymSystem.PL.Controllers
 
         #region Delete
         // GET: Base URL/Members/Delete/{id}  => show confirmation page to delete
-        // Delete
+        // DeleteConfirmed
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {
-            // Service Get member details to update by id
+            // Service Get member details to delete by id
             var member = await memberService.GetMemberDetailsByIdAsync(id, ct);
 
             if (member is null)
@@ -140,7 +139,7 @@ namespace GymSystem.PL.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed([FromRoute] int id, CancellationToken ct)
         {
-            // Service Get member details to update by id
+            // Service delete member by id
             var result = await memberService.DeleteMemberAsync(id, ct);
 
             if (result)
