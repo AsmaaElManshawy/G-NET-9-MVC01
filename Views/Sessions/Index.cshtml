@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<SessionViewModel>
+
+@{
     ViewData["Title"] = "Sessions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -75,14 +77,14 @@ else if (TempData["ErrorMessage"] != null)
                         </div>
                         <div class="card-footer bg-white border-0">
                             <div class="d-grid gap-2">
-                                <a asp-action="Details" asp-route-id="@session.Id" class="btn btn-outline btn-sm">
+                                <a asp-controller="Sessions" asp-action="Details" asp-route-id="@session.Id" class="btn btn-outline btn-sm">
                                     <i class="bi bi-eye me-1"></i>View Details
                                 </a>
                                 <div class="d-flex gap-2">
-                                    <a asp-action="Edit" asp-route-id="@session.Id" class="btn btn-outline btn-sm flex-fill">
+                                    <a asp-controller="Sessions" asp-action="Edit" asp-route-id="@session.Id" class="btn btn-outline btn-sm flex-fill">
                                         <i class="bi bi-pencil me-1"></i>Edit
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@session.Id" class="btn btn-outline text-danger btn-sm flex-fill">
+                                    <a asp-controller="Sessions" asp-action="Delete" asp-route-id="@session.Id" class="btn btn-outline text-danger btn-sm flex-fill">
                                         <i class="bi bi-trash me-1"></i>Delete
                                     </a>
                                 </div>

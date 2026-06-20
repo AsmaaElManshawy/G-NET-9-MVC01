@@ -8,10 +8,12 @@ namespace GymSystem.PL.Controllers
     {
 
         private readonly IMemberService memberService;
+        private readonly IAttachmentService _attachmentService;
 
-        public MembersController(IMemberService memberSer)
+        public MembersController(IMemberService memberSer , IAttachmentService attachmentService)
         {
             memberService = memberSer;
+            _attachmentService = attachmentService;
         }
 
         #region GET Members
@@ -56,6 +58,19 @@ namespace GymSystem.PL.Controllers
             return View(record);
         }
 
+        // get MembersPhoto
+        public async Task<IActionResult> Picture(int id)
+        {
+            var member = await memberService.GetMemberDetailsByIdAsync(id);
+            if (member is null || string.IsNullOrWhiteSpace(member.Photo))
+                return NotFound();
+
+            var result = _attachmentService.GetFile(member.Photo, "MembersPhoto");
+            if(result is null)
+                return NotFound();
+            return File(result.Value.stream, result.Value.contentType);
+        }
+
         #endregion
 
         #region Create
@@ -65,6 +80,7 @@ namespace GymSystem.PL.Controllers
             => View();
 
         // POST: Base URL/Members/Create/{member}  => handle form submission to create a new member
+        // CreateMember
         [HttpPost]
         public async Task<IActionResult> CreateMember(CreateMemberViewModel model, CancellationToken ct)
         {

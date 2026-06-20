@@ -1,3 +1,5 @@
+using GymManagment.BLL.ViewModels;
+using GymManagment.BLL.Profiles;
 using GymManagment.BLL.Services.Classes;
 using GymManagment.BLL.Services.Interfaces;
 using GymManagment.DAL.Context;
@@ -9,7 +11,7 @@ namespace GymSystem.PL
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -28,11 +30,25 @@ namespace GymSystem.PL
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             builder.Services.AddScoped<IMemberService , MemberService>();
+            builder.Services.AddScoped<IAttachmentService , AttachmentService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ITrainerService, TrainerService>();
+            builder.Services.AddScoped<ISessionRepositorie, SessionRepositorie>();
+            builder.Services.AddScoped<ISessionsService, SessionsService>();
+            builder.Services.AddScoped<IBookingRepositorie, BookingRepositorie>();
+            builder.Services.AddScoped<IBookingService, BookingService>();
+            builder.Services.AddScoped<IMembershipService, MembershipService>();
+            builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+
+            builder.Services.AddAutoMapper(x => x.AddProfile(new MappingProfile()));
+
+
 
             var app = builder.Build();
+
+            // seeding
+            await app.MigrateAndSeedDataAsync();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
