@@ -1,5 +1,4 @@
-﻿
-@model CreateMemberViewModel
+﻿@model CreateMemberViewModel
 
 @{
     ViewData["Title"] = "Create Member";
@@ -8,7 +7,15 @@
 
 <div class="container">
     <main role="main" class="pb-3">
-
+        @if (TempData["ErrorMessage"] != null)
+        {
+            @* Show Error Message if Member Failed To Create *@
+            <div id="Alert" class="alert alert-danger alert-dismissible fade show">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
         <header class="mb-4">
             <h3 class="text-primary-color">Add Member</h3>
         </header>
@@ -56,7 +63,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label asp-for="DateOfBirth"></label>
-                            <input asp-for="DateOfBirth" class="form-control" type="date" />                            
+                            <input asp-for="DateOfBirth" class="form-control" type="date" />
                             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                         </div>
                         <div class="col-12 col-md-6">
@@ -75,7 +82,7 @@
 
                         <div class="col-12 col-md-6">
                             <label asp-for="BuildingNumber"></label>
-                            <input asp-for ="BuildingNumber" class="form-control" />                            
+                            <input asp-for="BuildingNumber" class="form-control" />
                             <span asp-validation-for="BuildingNumber" class="text-danger"></span>
                         </div>
 

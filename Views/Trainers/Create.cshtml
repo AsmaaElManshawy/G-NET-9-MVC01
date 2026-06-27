@@ -7,6 +7,15 @@
 
 
 <div class="container mt-4">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        @* Show Error Message if Member Failed To Create *@
+        <div id="Alert" class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
     <header class="mb-4">
         <h3 class="text-primary-color">Add New Trainer</h3>
     </header>

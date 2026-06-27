@@ -27,23 +27,29 @@ namespace GymSystem.PL
             //================Register our repositories====================
             // EF Core will create DbContext and Repository instances per request, ensuring they are disposed of correctly
 
-            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            #region Repositories + UoW
 
-            builder.Services.AddScoped<IMemberService , MemberService>();
-            builder.Services.AddScoped<IAttachmentService , AttachmentService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped<ISessionRepositorie, SessionRepositorie>();
+            builder.Services.AddScoped<IMembershipRepositorie, MembershipRepositorie>();
+            builder.Services.AddScoped<IBookingRepositorie, BookingRepositorie>();
+
+            #endregion
+
+            #region Services
+
+            builder.Services.AddScoped<IAttachmentService , AttachmentService>();
+            builder.Services.AddScoped<IMemberService , MemberService>();
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ITrainerService, TrainerService>();
-            builder.Services.AddScoped<ISessionRepositorie, SessionRepositorie>();
             builder.Services.AddScoped<ISessionsService, SessionsService>();
-            builder.Services.AddScoped<IBookingRepositorie, BookingRepositorie>();
-            builder.Services.AddScoped<IBookingService, BookingService>();
             builder.Services.AddScoped<IMembershipService, MembershipService>();
+            builder.Services.AddScoped<IBookingService, BookingService>();
             builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+            #endregion
 
             builder.Services.AddAutoMapper(x => x.AddProfile(new MappingProfile()));
-
-
 
             var app = builder.Build();
 
