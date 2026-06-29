@@ -1,9 +1,12 @@
 ﻿using GymManagment.BLL.Services.Interfaces;
 using GymManagment.BLL.ViewModels.TrainersVMs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymSystem.PL.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
+
     public class TrainersController : Controller
     {
         private readonly ITrainerService trainerService;
@@ -31,10 +34,10 @@ namespace GymSystem.PL.Controllers
         {
             // Service Get member details by id
             var trainer = await trainerService.GetTrainerDetailsByIdAsync(id, ct);
-            if (trainer == null)
-                TempData["ErrorMessage"] = "Trainer Not Found !";
+            if (!trainer.success)
+                TempData["ErrorMessage"] = trainer.error;
             
-            return View(trainer);
+            return View(trainer.value);
         }
 
         #endregion
@@ -53,10 +56,10 @@ namespace GymSystem.PL.Controllers
 
             var result = await trainerService.CreateTrainerAsync(model, ct);
 
-            if (result)
+            if (result.success)
                 TempData["SuccessMessage"] = "Trainer Created Cuccessfully.";
             else
-                TempData["ErrorMessage"] = "Failed To Create Trainer.";
+                TempData["ErrorMessage"] = result.error;
 
             return RedirectToAction(nameof(Index));
         }
@@ -72,12 +75,12 @@ namespace GymSystem.PL.Controllers
             // Service Get trainer details to update by id
             var trainer = await trainerService.GetTrainerToUpdateAsync(id, ct);
 
-            if (trainer is null)
+            if (!trainer.success)
             {
-                TempData["ErrorMessage"] = "Trainer Not Found !";
+                TempData["ErrorMessage"] = trainer.error;
                 return RedirectToAction(nameof(Index));
             }
-            return View(trainer);
+            return View(trainer.value);
         }
 
         // POST: Base URL/Trainers/Edit/{trainer}  => handle form submission to update the trainer
@@ -88,10 +91,10 @@ namespace GymSystem.PL.Controllers
 
             var result = await trainerService.UpdateTrainerAsync(id, model, ct);
 
-            if (result)
+            if (result.success)
                 TempData["SuccessMessage"] = "Trainer Updated Successfully.";
             else
-                TempData["ErrorMessage"] = "Failed To Update Trainer.";
+                TempData["ErrorMessage"] = result.error;
 
             return RedirectToAction(nameof(Index));
         }
@@ -107,9 +110,9 @@ namespace GymSystem.PL.Controllers
             // Service Get trainer details to delete by id
             var trainer = await trainerService.GetTrainerDetailsByIdAsync(id, ct);
 
-            if (trainer is null)
+            if (!trainer.success)
             {
-                TempData["ErrorMessage"] = "Trainer Not Found !";
+                TempData["ErrorMessage"] = trainer.error;
                 return RedirectToAction(nameof(Index));
             }
             return View();
@@ -123,10 +126,10 @@ namespace GymSystem.PL.Controllers
             // Service delete trainer by id
             var result = await trainerService.DeleteTrainerAsync(id, ct);
 
-            if (result)
+            if (result.success)
                 TempData["SuccessMessage"] = "Trainer Deleted Successfully.";
             else
-                TempData["ErrorMessage"] = "Failed To Delete Trainer.";
+                TempData["ErrorMessage"] = result.error;
 
             return RedirectToAction(nameof(Index));
         }

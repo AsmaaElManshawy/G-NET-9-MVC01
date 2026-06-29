@@ -1,10 +1,12 @@
 ﻿using GymManagment.BLL.Services.Interfaces;
 using GymManagment.BLL.ViewModels.MembershipVMs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GymSystem.PL.Controllers
 {
+    [Authorize]
     public class MembershipsController : Controller
     {
         private readonly IMembershipService _membershipServ;
@@ -16,6 +18,7 @@ namespace GymSystem.PL.Controllers
 
         #region Get Memberships
         // Get :: Base URL/Memberships/Index
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var memberships = await _membershipServ.GetAllMembershipsAsync();

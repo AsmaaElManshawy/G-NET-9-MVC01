@@ -6,6 +6,8 @@ using GymManagment.DAL.Context;
 using GymManagment.DAL.Repositories.Class;
 using GymManagment.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using GymManagment.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace GymSystem.PL
 {
@@ -39,7 +41,6 @@ namespace GymSystem.PL
 
             #region Services
 
-            builder.Services.AddScoped<IAttachmentService , AttachmentService>();
             builder.Services.AddScoped<IMemberService , MemberService>();
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ITrainerService, TrainerService>();
@@ -47,6 +48,23 @@ namespace GymSystem.PL
             builder.Services.AddScoped<IMembershipService, MembershipService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
             builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+            builder.Services.AddScoped<IAttachmentService , AttachmentService>();
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                //config.Password.RequireUppercase = true; // default
+                //config.Password.RequireLowercase = true; // default
+
+                config.User.RequireUniqueEmail = true;
+                config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
+                config.Lockout.MaxFailedAccessAttempts = 5;
+            }).AddEntityFrameworkStores<GymDbContext>();
+
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                // default rout
+                //options.LoginPath = "/Account/Login";
+                //options.AccessDeniedPath = "/Account/AccessDenied";
+            });
             #endregion
 
             builder.Services.AddAutoMapper(x => x.AddProfile(new MappingProfile()));
@@ -66,13 +84,13 @@ namespace GymSystem.PL
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Account}/{action=Login}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

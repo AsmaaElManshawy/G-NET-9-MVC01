@@ -15,11 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
-    <Folder Include="wwwroot\Files\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\GymManagment.BLL\GymManagment.BLL.csproj" />
   </ItemGroup>
 

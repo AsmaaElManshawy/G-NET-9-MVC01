@@ -152,8 +152,9 @@
 
     </main>
 </div>
-<script src="../js/jquery.validate.min.js"></script>
-<script src="../js/jquery.validate.unobtrusive.min.js"></script>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_AlertScripts.cshtml" />
 <script>
     // Preview photo before upload
     document.getElementById('photoInput').addEventListener('change', function (e) {
@@ -169,3 +170,4 @@
         }
     });
 </script>
+}
