@@ -1,10 +1,12 @@
 ﻿
 using GymManagment.BLL.Services.Interfaces;
 using GymManagment.BLL.ViewModels.PlansVMs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymSystem.PL.Controllers
 {
+    [Authorize]
     public class PlansController : Controller
     {
         // Database connection
@@ -23,15 +25,15 @@ namespace GymSystem.PL.Controllers
             return View(plans);
         }
 
-        
+        [HttpGet]
         // GET: Base URL/Plans/Details/{id}  => details of a specific plan
         public async Task<IActionResult> Details(int id , CancellationToken ct)
         {
             var plan = await planService.GetPlanDetailsByIdAsync(id , ct);
-            if (plan == null)
-                TempData["ErrorMessage"] = "Plan Not Found !";
+            if (!plan.success)
+                TempData["ErrorMessage"] = plan.error;
 
-            return View(plan);
+            return View(plan.value);
         }
 
         #endregion
@@ -46,12 +48,12 @@ namespace GymSystem.PL.Controllers
             // Service Get plan details to update by id
             var plan = await planService.GetPlanToUpdateAsync(id, ct);
 
-            if (plan is null)
+            if (!plan.success)
             {
-                TempData["ErrorMessage"] = "plan Not Found !";
+                TempData["ErrorMessage"] = plan.error;
                 return RedirectToAction(nameof(Index));
             }
-            return View(plan);
+            return View(plan.value);
         }
 
         // POST: Base URL/Plans/Edit/{member}  => handle form submission to update the plan
@@ -62,10 +64,10 @@ namespace GymSystem.PL.Controllers
 
             var result = await planService.UpdatePlanAsync(id, model, ct);
 
-            if (result)
+            if (result.success)
                 TempData["SuccessMessage"] = "Plan Updated Successfully.";
             else
-                TempData["ErrorMessage"] = "Failed To Update Plan.";
+                TempData["ErrorMessage"] = result.error;
 
             return RedirectToAction(nameof(Index));
         }
@@ -76,13 +78,13 @@ namespace GymSystem.PL.Controllers
         [HttpPost]
         public async Task<IActionResult> Activate(int id, CancellationToken ct)
         {
-            string result = await planService.SoftDeletePlanAsync(id, ct);
+            var result = await planService.SoftDeletePlanAsync(id, ct);
 
-            if (result == "false")
-                TempData["ErrorMessage"] = "Plan Not Found ! Or Has Active Memberships.";
-            else if (result == "DActivated")
+            if (!result.success)
+                TempData["ErrorMessage"] = result.error;
+            else if (result.value == "DActivated")
                 TempData["SuccessMessage"] = "Plan DActivated Successfully";
-            else if (result == "Activated")
+            else if (result.value == "Activated")
                 TempData["SuccessMessage"] = "Plan Activated Successfully";
 
             return RedirectToAction(nameof(Index));

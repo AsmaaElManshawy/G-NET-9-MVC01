@@ -7,6 +7,15 @@
 
 
 <div class="container mt-4">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        @* Show Error Message if Member Failed To Create *@
+        <div id="Alert" class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
     <header class="mb-4">
         <h3 class="text-primary-color">Add New Trainer</h3>
     </header>
@@ -83,11 +92,11 @@
         <div class="row g-3">
 
             <div class="col-12 col-md-6">
-                <label asp-for="Specialties" class="form-label"></label>
-                <select asp-for="Specialties" asp-items="Html.GetEnumSelectList<Specialty>()" class="form-select">
+                <label asp-for="Specialty" class="form-label"></label>
+                <select asp-for="Specialty" asp-items="Html.GetEnumSelectList<Specialty>()" class="form-select">
                     <option value="">-- Select Specialist --</option>
                 </select>
-                <span asp-validation-for="Specialties" class="text-danger"></span>
+                <span asp-validation-for="Specialty" class="text-danger"></span>
             </div>
         </div>
 
@@ -97,3 +106,8 @@
     </form>
 
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_AlertScripts.cshtml" />
+}

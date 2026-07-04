@@ -1,5 +1,4 @@
-﻿
-@model CreateMemberViewModel
+﻿@model CreateMemberViewModel
 
 @{
     ViewData["Title"] = "Create Member";
@@ -8,11 +7,19 @@
 
 <div class="container">
     <main role="main" class="pb-3">
-
+        @if (TempData["ErrorMessage"] != null)
+        {
+            @* Show Error Message if Member Failed To Create *@
+            <div id="Alert" class="alert alert-danger alert-dismissible fade show">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
         <header class="mb-4">
             <h3 class="text-primary-color">Add Member</h3>
         </header>
-        <form asp-controller="Members" asp-action="CreateMember" method="post">
+        <form asp-controller="Members" asp-action="CreateMember" method="post" enctype="multipart/form-data">
 
             <!-- Step navigation -->
             <ul class="nav nav-tabs mb-4" id="addMemberTabs" role="tablist">
@@ -39,6 +46,16 @@
                         <hr class="mt-2">
                     </div>
                     <div class="row g-3">
+                        <div class="form-group">
+                            <!-- Photo Preview -->
+                            <div class="mt-2">
+                                <img id="photoPreview" src="#" alt="Photo Preview" style="max-width: 200px; display: none;" class="img-thumbnail" />
+                            </div>
+                            <label asp-for="PhotoFile" class="control-label">Profile Photo <span class="text-danger">*</span></label>
+                            <input asp-for="PhotoFile" type="file" class="form-control" accept="image/*" id="photoInput" required />
+                            <span asp-validation-for="PhotoFile" class="text-danger"></span>
+                            <small class="form-text text-muted">Max size: 5 MB. Allowed types: JPG, PNG, GIF (Required)</small>
+                        </div>
                         <div class="col-12 col-md-6">
                             <label asp-for="Name"></label>
                             <input asp-for="Name" class="form-control" />
@@ -56,7 +73,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label asp-for="DateOfBirth"></label>
-                            <input asp-for="DateOfBirth" class="form-control" type="date" />                            
+                            <input asp-for="DateOfBirth" class="form-control" type="date" />
                             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                         </div>
                         <div class="col-12 col-md-6">
@@ -75,7 +92,7 @@
 
                         <div class="col-12 col-md-6">
                             <label asp-for="BuildingNumber"></label>
-                            <input asp-for ="BuildingNumber" class="form-control" />                            
+                            <input asp-for="BuildingNumber" class="form-control" />
                             <span asp-validation-for="BuildingNumber" class="text-danger"></span>
                         </div>
 
@@ -145,8 +162,9 @@
 
     </main>
 </div>
-<script src="../js/jquery.validate.min.js"></script>
-<script src="../js/jquery.validate.unobtrusive.min.js"></script>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_AlertScripts.cshtml" />
 <script>
     // Preview photo before upload
     document.getElementById('photoInput').addEventListener('change', function (e) {
@@ -162,3 +180,4 @@
         }
     });
 </script>
+}
