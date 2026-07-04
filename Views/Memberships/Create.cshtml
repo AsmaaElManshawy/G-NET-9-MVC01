@@ -23,24 +23,22 @@
                     <h4>@ViewData["Title"]</h4>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form asp-controller="Memberships" asp-action="Create" method="post">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <div class="mb-3">
-                            <label asp-for="MemberId" class="form-label fw-semibold">
-                                Member <span class="text-danger">*</span>
-                            </label>
+                            <label asp-for="MemberId" class="form-label">Member</label>
                             <select asp-for="MemberId" asp-items="ViewBag.Members" class="form-select">
-                                <option value="">Select Member</option>
+                                <option value="">-- Select Member --</option>
                             </select>
                             <span asp-validation-for="MemberId" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="PlanId" class="form-label fw-semibold">
-                                Plan <span class="text-danger">*</span>
-                            </label>
+                            <label asp-for="PlanId" class="form-label">Plan</label>
                             <select asp-for="PlanId" asp-items="ViewBag.Plans" class="form-select">
-                                <option value="">Select Plan</option>
+                                <option value="">-- Select Plan --</option>
                             </select>
                             <span asp-validation-for="PlanId" class="text-danger"></span>
                         </div>

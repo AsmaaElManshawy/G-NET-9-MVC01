@@ -1,4 +1,5 @@
-﻿using GymManagment.BLL.Services.Interfaces;
+﻿using GymManagment.BLL.Services.Classes;
+using GymManagment.BLL.Services.Interfaces;
 using GymManagment.BLL.ViewModels.MembersVMs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,6 @@ namespace GymSystem.PL.Controllers
         #region GET Members
 
         // GET: Base URL/Members/Index  => list all members
-
         public async Task<IActionResult> Index(CancellationToken ct)
         {
             // Service Get all members
@@ -61,11 +61,12 @@ namespace GymSystem.PL.Controllers
         // get MembersPhoto
         public async Task<IActionResult> Picture(int id)
         {
-            var member = await memberService.GetMemberDetailsByIdAsync(id);
-            if (!member.success || string.IsNullOrWhiteSpace(member.value.Photo))
-                return NotFound(member.error);
+            var res = await memberService.GetMemberDetailsByIdAsync(id);
+            var member = res.value;
+            if (!res.success || member is null || string.IsNullOrWhiteSpace(member.Photo))
+                return NotFound(res.error);
 
-            var result = _attachmentService.GetFile(member.value.Photo, "MembersPhoto");
+            var result = _attachmentService.GetFile(member.Photo, "MembersPictures");
             if(result is null)
                 return NotFound();
 

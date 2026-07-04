@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="MembersPictures\05207a51-8972-4bdd-a056-93b91728587c.jpeg" />
+    <Content Include="MembersPictures\2712ac2f-92ef-4eb4-aa94-8de0a2fa5973.jpeg" />
+    <Content Include="MembersPictures\2c771aee-bb67-48d8-ae51-001ae45b347f.jpeg" />
+    <Content Include="MembersPictures\34a6808f-be18-4374-85f7-8b975fb24a07.png" />
+    <Content Include="MembersPictures\3cdfd1b5-cdc7-4a68-9ab1-f51698e1494934a6808f-be18-4374-85f7-8b975fb24a07.png" />
+    <Content Include="MembersPictures\9515921f-1304-4aa2-86da-41a6a46792d3.jpeg" />
+    <Content Include="MembersPictures\a9e4eb20-d980-4641-b2f0-e48fe5c4c9c2.jpeg" />
+    <Content Include="MembersPictures\c749d11b-e293-41bd-b8af-7ce3b214c9b7fd39adf9-1e55-4193-bd0c-34a068904ada.jpeg" />
+    <Content Include="MembersPictures\fd39adf9-1e55-4193-bd0c-34a068904ada.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.16">
       <PrivateAssets>all</PrivateAssets>
